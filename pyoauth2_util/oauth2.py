@@ -51,8 +51,9 @@ def verify_token(Authorization: str = Header(None)):
         # jwt提供了通过三段token，取出payload的方法，并且有校验功能
         # 这个是我们签发时，封装的payload字典
         decoded_token = jwt.decode(jwt=token, key=salt, verify=True)
-        # 从解码后的 token 中获取 user_id 字段
+        # 从解码后的 token 中获取 user_id和is_admin 字段
         user_id = decoded_token.get('user_id')
+        is_admin = decoded_token.get('is_admin')
     except exceptions.ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -75,4 +76,4 @@ def verify_token(Authorization: str = Header(None)):
             detail=f"{str(e)}",
         )
     # 认证通过，返回token
-    return user_id
+    return user_id, is_admin

@@ -2,6 +2,7 @@
 # @Author : buyfakett
 # @Time : 2023/12/29 14:21
 import jwt
+import json
 from jwt import exceptions
 import datetime
 from fastapi import Header, HTTPException
@@ -75,5 +76,8 @@ def verify_token(Authorization: str = Header(None)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"{str(e)}",
         )
-    # 认证通过，返回token
-    return user_id, is_admin
+    user_info = {
+        'user_id': user_id,
+        'is_admin': is_admin,
+    }
+    return user_info

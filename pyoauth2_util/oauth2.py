@@ -12,7 +12,7 @@ setting = Setting()
 
 
 # 创建 JWT token
-def create_token(user_id: int, day: int = 99999, is_admin: bool = True):
+def create_token(user_id: int, is_admin: bool = True, day: int = 99999):
     """
     :param user_id: 用户id
     :param day:  日期。单位天 ，默认99999天

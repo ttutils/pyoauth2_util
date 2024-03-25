@@ -11,7 +11,7 @@ with io.open("requirements.txt", 'r') as f:
 
 setup(
     name='pyoauth2_util',
-    version='1.0.5',
+    version='1.0.6',
     description='oauth2助手',
     author='buyfakett',
     author_email='buyfakett@vip.qq.com',

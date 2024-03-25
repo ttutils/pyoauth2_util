@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author : buyfakett
 # @Time : 2023/12/29 14:21
+import logging
+
 import jwt
 from jwt import exceptions
 import datetime
@@ -43,9 +45,11 @@ def verify_token(Authorization: str = Header(None)):
     # 从请求头中获取token
     # 判断url在不在白名单中
     if not token:
+        message = '没有携带token'
+        logging.error(f'token验证结果：{message}')
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="没有携带token",
+            detail=message,
         )
     try:
         # jwt提供了通过三段token，取出payload的方法，并且有校验功能
@@ -55,21 +59,28 @@ def verify_token(Authorization: str = Header(None)):
         user_id = decoded_token.get('user_id')
         is_admin = decoded_token.get('is_admin')
     except exceptions.ExpiredSignatureError:
+        message = 'token已失效'
+        logging.error(f'token验证结果：{message}')
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="token已失效",
+            detail=message,
         )
     except jwt.DecodeError:
+        message = 'token认证失败'
+        logging.error(f'token验证结果：{message}')
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="token认证失败",
+            detail=message,
         )
     except jwt.InvalidTokenError:
+        message = '非法的token'
+        logging.error(f'token验证结果：{message}')
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="非法的token",
+            detail=message,
         )
     except Exception as e:
+        logging.error(f'token验证结果：{str(e)}')
         # 所有异常都会走到这
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

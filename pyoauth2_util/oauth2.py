@@ -8,9 +8,7 @@ from jwt import exceptions
 import datetime
 from fastapi import Header, HTTPException
 from starlette import status
-from pyconfig_util.config_util import Setting
-
-setting = Setting()
+from pyconfig_util.config_util import setting
 
 
 # 创建 JWT token
